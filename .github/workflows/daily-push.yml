@@ -1,0 +1,18 @@
+name: 每日单词提醒
+
+on:
+  schedule:
+    # 每天 7:30 北京时间 = UTC 23:30（前一天）
+    - cron: '30 23 * * *'
+  workflow_dispatch:
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 生成今日任务并推送
+        env:
+          PUSHPLUS_TOKEN: ${{ secrets.PUSHPLUS_TOKEN }}
+        run: python3 daily_push.py
