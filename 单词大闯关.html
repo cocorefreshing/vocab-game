@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<!-- saved from url=(0067)https://italia-giving-experiences-lynn.trycloudflare.com/index.html -->
+<html lang="zh-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>单词大闯关</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--primary:#6c5ce7;--primary-light:#a29bfe;--accent:#fdcb6e;--success:#00b894;--danger:#e17055;--bg:#f8f9fa;--card:#fff;--text:#2d3436;--text2:#636e72;--radius:12px;--shadow:0 4px 15px rgba(0,0,0,.1)}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);max-width:440px;margin:0 auto;min-height:100vh;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
+.page{display:none;min-height:100vh;padding:20px;animation:fadeIn .3s}
+.page.active{display:flex;flex-direction:column}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:14px 24px;border:none;border-radius:var(--radius);font-size:16px;font-weight:600;cursor:pointer;transition:all .2s;width:100%}
+.btn:active{transform:scale(.96)}
+.btn-primary{background:var(--primary);color:#fff}
+.btn-primary:hover{background:#5b4cdb}
+.btn-success{background:var(--success);color:#fff}
+.btn-accent{background:var(--accent);color:#2d3436}
+.btn-danger{background:var(--danger);color:#fff}
+.btn-outline{background:transparent;border:2px solid var(--primary);color:var(--primary)}
+.btn-sm{padding:10px 16px;font-size:14px}
+.card{background:var(--card);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);margin-bottom:12px}
+
+/* Home */
+.home-title{font-size:36px;font-weight:800;text-align:center;margin-top:60px;background:linear-gradient(135deg,var(--primary),#e17055);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.home-sub{color:var(--text2);text-align:center;margin:8px 0 40px;font-size:14px}
+.grade-btn{padding:20px;font-size:20px;font-weight:700;border-radius:16px;margin-bottom:16px;position:relative;overflow:hidden}
+.grade-btn::after{content:'';position:absolute;top:0;right:0;width:60px;height:60px;border-radius:0 0 0 60px;opacity:.15}
+
+/* Level Select */
+.header{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.back-btn{width:36px;height:36px;border-radius:50%;border:none;background:var(--card);box-shadow:var(--shadow);cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center}
+.page-title{font-size:20px;font-weight:700}
+.book-label{font-size:14px;color:var(--primary);font-weight:600;margin:12px 0 8px}
+.level-card{display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--card);border-radius:var(--radius);margin-bottom:8px;box-shadow:var(--shadow);cursor:pointer;transition:all .2s}
+.level-card:active{transform:scale(.98)}
+.level-card.locked{opacity:.5;pointer-events:none}
+.level-card.completed{border-left:4px solid var(--success)}
+.level-num{width:36px;height:36px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0}
+.level-card.completed .level-num{background:var(--success)}
+.level-info{flex:1;min-width:0}
+.level-name{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.level-sub{font-size:12px;color:var(--text2)}
+.level-stars{color:var(--accent);font-size:14px;letter-spacing:2px}
+.level-lock{font-size:20px}
+
+/* Learn */
+.learn-progress{height:6px;background:#e0e0e0;border-radius:3px;margin-bottom:20px;overflow:hidden}
+.learn-progress-bar{height:100%;background:linear-gradient(90deg,var(--primary),var(--primary-light));border-radius:3px;transition:width .3s}
+.learn-counter{text-align:center;font-size:13px;color:var(--text2);margin-bottom:8px}
+.learn-word{text-align:center;padding:20px 0}
+.learn-en{font-size:32px;font-weight:800;color:var(--primary)}
+.learn-phonetic{font-size:18px;color:var(--text2);margin:4px 0}
+.learn-cn{font-size:20px;color:var(--text);margin:8px 0}
+.learn-speaker{display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:50%;border:2px solid var(--primary);background:transparent;cursor:pointer;font-size:24px;margin:8px 0;transition:all .2s}
+.learn-speaker:active{background:var(--primary);color:#fff}
+.learn-example{background:#f0edff;border-radius:var(--radius);padding:12px 16px;margin:16px 0;text-align:left;font-size:14px;line-height:1.6}
+.learn-example b{color:var(--primary)}
+.learn-btns{display:flex;gap:12px;margin-top:auto;padding-top:20px}
+.learn-btns .btn{flex:1}
+
+/* PK */
+.pk-page{background:linear-gradient(135deg,#2d1b69,#1a1a2e);color:#fff;min-height:100vh;padding:20px}
+.pk-header{text-align:center;margin-bottom:16px}
+.pk-vs{font-size:28px;font-weight:800;text-align:center;margin:12px 0;background:linear-gradient(90deg,var(--accent),#e17055);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.pk-scores{display:flex;justify-content:space-around;margin-bottom:16px}
+.pk-score{text-align:center}
+.pk-score-name{font-size:12px;opacity:.7}
+.pk-score-val{font-size:28px;font-weight:800}
+.pk-timer{width:80px;height:80px;border-radius:50%;border:4px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:800;margin:0 auto 20px;position:relative}
+.pk-timer.urgent{border-color:var(--danger);color:var(--danger);animation:pulse .5s infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+.pk-question{text-align:center;font-size:22px;font-weight:700;margin-bottom:20px;min-height:60px;display:flex;align-items:center;justify-content:center}
+.pk-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+.pk-opt{padding:14px;border:2px solid rgba(255,255,255,.2);border-radius:var(--radius);text-align:center;font-size:16px;font-weight:600;cursor:pointer;transition:all .2s;background:rgba(255,255,255,.05)}
+.pk-opt:active{transform:scale(.95)}
+.pk-opt.correct{border-color:var(--success);background:rgba(0,184,148,.2);color:var(--success)}
+.pk-opt.wrong{border-color:var(--danger);background:rgba(225,112,85,.2);color:var(--danger)}
+.pk-opt.disabled{pointer-events:none}
+.pk-result{text-align:center;padding:30px 0}
+.pk-result-icon{font-size:64px;margin-bottom:12px}
+.pk-result-text{font-size:24px;font-weight:800;margin-bottom:8px}
+.pk-result-detail{font-size:14px;opacity:.7}
+
+/* Report */
+.report-card{background:linear-gradient(135deg,#6c5ce7,#a29bfe);border-radius:20px;padding:24px;color:#fff;text-align:center;margin:20px 0;position:relative;overflow:hidden}
+.report-card::before{content:'';position:absolute;top:-30px;right:-30px;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,.1)}
+.report-title{font-size:22px;font-weight:800;margin-bottom:16px}
+.report-score{font-size:48px;font-weight:900;margin:8px 0}
+.report-stars{font-size:28px;letter-spacing:4px;margin:8px 0}
+.report-info{font-size:13px;opacity:.8;margin:4px 0}
+.report-lock{display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.2);border-radius:20px;padding:4px 12px;font-size:12px;margin-top:12px}
+.report-actions{display:flex;gap:12px;margin-top:20px}
+
+/* History */
+.history-item{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #eee}
+.history-item:last-child{border:none}
+.history-name{font-size:14px;font-weight:600}
+.history-score{font-size:14px;color:var(--primary);font-weight:700}
+.history-date{font-size:12px;color:var(--text2)}
+.history-stars{color:var(--accent)}
+
+/* Responsive helpers */
+.text-center{text-align:center}
+.mt-auto{margin-top:auto}
+.mb-8{margin-bottom:8px}
+.mb-16{margin-bottom:16px}
+.mb-20{margin-bottom:20px}
+.gap-12{gap:12px}
+
+/* Animations */
+@keyframes bounceIn{0%{transform:scale(0)}50%{transform:scale(1.1)}100%{transform:scale(1)}}
+.bounce-in{animation:bounceIn .4s}
+@keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.slide-up{animation:slideUp .4s}
+</style>
+</head>
+<body>
+
+<div id="page-home" class="page active">
+  <div class="home-title">单词大闯关</div>
+  <div class="home-sub">译林版英语词汇闯关PK</div>
+  <button class="btn btn-primary grade-btn" onclick="selectGrade(6)" style="background:linear-gradient(135deg,#6c5ce7,#a29bfe)">六年级</button>
+  <button class="btn btn-primary grade-btn" onclick="selectGrade(7)" style="background:linear-gradient(135deg,#e17055,#fdcb6e)">七年级</button>
+  <div class="text-center" style="margin-top:auto;padding:20px;color:var(--text2);font-size:12px">学8个词 → 和AI PK → 拿高分!</div>
+</div>
+
+<div id="page-levels" class="page"></div>
+<div id="page-learn" class="page"></div>
+<div id="page-pk" class="page"></div>
+<div id="page-report" class="page"></div>
+<div id="page-history" class="page"></div>
+
+<script>
+// ========== DATA ==========
+const DATA = {
+6: [
+  {book:'六年级上册',unit:'Unit 1 The King\'s New Clothes',words:[
+    {en:'magic',ph:'/ˈmædʒɪk/',cn:'有魔力的，神奇的',ex:'The fairy has a <b>magic</b> wand.'},
+    {en:'clever',ph:'/ˈklevər/',cn:'聪明的',ex:'The boy is very <b>clever</b>.'},
+    {en:'foolish',ph:'/ˈfuːlɪʃ/',cn:'愚蠢的',ex:'It is <b>foolish</b> to do that.'},
+    {en:'laugh',ph:'/lɑːf/',cn:'笑，大笑',ex:'They all <b>laugh</b> at the joke.'},
+    {en:'wear',ph:'/weər/',cn:'穿',ex:'The king likes to <b>wear</b> new clothes.'},
+    {en:'through',ph:'/θruː/',cn:'穿过',ex:'We walk <b>through</b> the forest.'},
+    {en:'long long ago',ph:'/lɒŋ lɒŋ əˈɡəʊ/',cn:'很久以前',ex:'<b>Long long ago</b>, there was a king.'},
+    {en:'turn into',ph:'/tɜːn ˈɪntuː/',cn:'变成',ex:'The frog can <b>turn into</b> a prince.'}
+  ]},
+  {book:'六年级上册',unit:'Unit 2 What a Day!',words:[
+    {en:'sunny',ph:'/ˈsʌni/',cn:'晴朗的',ex:'It is a <b>sunny</b> day today.'},
+    {en:'weather',ph:'/ˈweðər/',cn:'天气',ex:'The <b>weather</b> is nice today.'},
+    {en:'windy',ph:'/ˈwɪndi/',cn:'有风的',ex:'It is <b>windy</b> in autumn.'},
+    {en:'cloudy',ph:'/ˈklaʊdi/',cn:'多云的',ex:'The sky is <b>cloudy</b> today.'},
+    {en:'rainy',ph:'/ˈreɪni/',cn:'多雨的',ex:'It is a <b>rainy</b> afternoon.'},
+    {en:'become',ph:'/bɪˈkʌm/',cn:'变成',ex:'The sky <b>becomes</b> dark.'},
+    {en:'honey',ph:'/ˈhʌni/',cn:'蜂蜜',ex:'I like to eat <b>honey</b>.'},
+    {en:'bring',ph:'/brɪŋ/',cn:'带来',ex:'Please <b>bring</b> your book here.'}
+  ]},
+  {book:'六年级上册',unit:'Unit 3 Holiday Fun',words:[
+    {en:'holiday',ph:'/ˈhɒlədeɪ/',cn:'假日',ex:'We have a long <b>holiday</b>.'},
+    {en:'excited',ph:'/ɪkˈsaɪtɪd/',cn:'激动的',ex:'The children are very <b>excited</b>.'},
+    {en:'Bund',ph:'/bʌnd/',cn:'外滩',ex:'We visited the <b>Bund</b> in Shanghai.'},
+    {en:'Great Wall',ph:'/ɡreɪt wɔːl/',cn:'长城',ex:'The <b>Great Wall</b> is very long.'},
+    {en:'fashion show',ph:'/ˈfæʃn ʃəʊ/',cn:'时装秀',ex:'There is a <b>fashion show</b> at school.'},
+    {en:'paper',ph:'/ˈpeɪpər/',cn:'纸',ex:'I need some <b>paper</b> to draw.'},
+    {en:'bottle',ph:'/ˈbɒtl/',cn:'瓶子',ex:'Give me a <b>bottle</b> of water.'},
+    {en:'at first',ph:'/ət fɜːst/',cn:'开始',ex:'<b>At first</b>, I was nervous.'}
+  ]},
+  {book:'六年级上册',unit:'Unit 4 Then and Now',words:[
+    {en:'ago',ph:'/əˈɡəʊ/',cn:'以前',ex:'Six years <b>ago</b>, I was a baby.'},
+    {en:'telephone',ph:'/ˈtelɪfəʊn/',cn:'电话',ex:'She is on the <b>telephone</b>.'},
+    {en:'mobile phone',ph:'/ˈməʊbaɪl fəʊn/',cn:'手机',ex:'I have a new <b>mobile phone</b>.'},
+    {en:'newspaper',ph:'/ˈnjuːzpeɪpər/',cn:'报纸',ex:'My dad reads the <b>newspaper</b>.'},
+    {en:'e-book',ph:'/ˈiː bʊk/',cn:'电子书',ex:'I read an <b>e-book</b> on the iPad.'},
+    {en:'anywhere',ph:'/ˈeniweər/',cn:'随处',ex:'You can go <b>anywhere</b> you like.'},
+    {en:'all over the world',ph:'/ɔːl ˈəʊvə ðə wɜːld/',cn:'全世界',ex:'People <b>all over the world</b> love pandas.'},
+    {en:'yesterday',ph:'/ˈjestədeɪ/',cn:'昨天',ex:'I went to the park <b>yesterday</b>.'}
+  ]},
+  {book:'六年级上册',unit:'Unit 5 Signs',words:[
+    {en:'sign',ph:'/saɪn/',cn:'标识',ex:'Look at the <b>sign</b> on the wall.'},
+    {en:'mean',ph:'/miːn/',cn:'意思是',ex:'What does this <b>mean</b>?'},
+    {en:'litter',ph:'/ˈlɪtər/',cn:'乱扔垃圾',ex:'Do not <b>litter</b> in the park.'},
+    {en:'smoke',ph:'/sməʊk/',cn:'吸烟',ex:'Please do not <b>smoke</b> here.'},
+    {en:'Danger',ph:'/ˈdeɪndʒər/',cn:'危险',ex:'<b>Danger</b>! Keep out!'},
+    {en:'Wet floor',ph:'/wet flɔːr/',cn:'小心地滑',ex:'<b>Wet floor</b>! Be careful!'},
+    {en:'No smoking',ph:'/nəʊ ˈsməʊkɪŋ/',cn:'请勿吸烟',ex:'<b>No smoking</b> in the hospital.'},
+    {en:'No littering',ph:'/nəʊ ˈlɪtərɪŋ/',cn:'请勿乱扔垃圾',ex:'<b>No littering</b> in the classroom.'}
+  ]},
+  {book:'六年级上册',unit:'Unit 6 Keep Our City Clean',words:[
+    {en:'keep',ph:'/kiːp/',cn:'保持',ex:'We should <b>keep</b> our city clean.'},
+    {en:'dirty',ph:'/ˈdɜːti/',cn:'肮脏的',ex:'The water is very <b>dirty</b>.'},
+    {en:'rubbish',ph:'/ˈrʌbɪʃ/',cn:'垃圾',ex:'Please put the <b>rubbish</b> in the bin.'},
+    {en:'messy',ph:'/ˈmesi/',cn:'乱七八糟的',ex:'The room is very <b>messy</b>.'},
+    {en:'plant',ph:'/plɑːnt/',cn:'种植',ex:'We <b>plant</b> trees in spring.'},
+    {en:'throw',ph:'/θrəʊ/',cn:'扔',ex:'Do not <b>throw</b> rubbish on the ground.'},
+    {en:'pick up',ph:'/pɪk ʌp/',cn:'捡起',ex:'Please <b>pick up</b> the paper.'},
+    {en:'slip',ph:'/slɪp/',cn:'滑倒',ex:'Be careful not to <b>slip</b> on the floor.'}
+  ]},
+  {book:'六年级上册',unit:'Unit 7 Protect the Earth',words:[
+    {en:'protect',ph:'/prəˈtekt/',cn:'保护',ex:'We must <b>protect</b> the Earth.'},
+    {en:'save',ph:'/seɪv/',cn:'节约',ex:'Please <b>save</b> water every day.'},
+    {en:'waste',ph:'/weɪst/',cn:'浪费',ex:'Do not <b>waste</b> food.'},
+    {en:'reuse',ph:'/riːˈjuːz/',cn:'再利用',ex:'We can <b>reuse</b> old bottles.'},
+    {en:'energy',ph:'/ˈenədʒi/',cn:'能源',ex:'We should save <b>energy</b>.'},
+    {en:'cut down',ph:'/kʌt daʊn/',cn:'砍伐',ex:'Do not <b>cut down</b> too many trees.'},
+    {en:'plastic',ph:'/ˈplæstɪk/',cn:'塑料',ex:'We should use less <b>plastic</b>.'},
+    {en:'coal',ph:'/kəʊl/',cn:'煤炭',ex:'<b>Coal</b> is a kind of energy.'}
+  ]},
+  {book:'六年级上册',unit:'Unit 8 Chinese New Year',words:[
+    {en:'red packet',ph:'/red ˈpækɪt/',cn:'红包',ex:'I got a <b>red packet</b> from my grandma.'},
+    {en:'fireworks',ph:'/ˈfaɪəwɜːks/',cn:'烟花',ex:'We watch <b>fireworks</b> at night.'},
+    {en:'firecracker',ph:'/ˈfaɪəkrækər/',cn:'鞭炮',ex:'The <b>firecracker</b> makes a loud sound.'},
+    {en:'tangyuan',ph:'/ˈtæŋjuːæn/',cn:'汤圆',ex:'We eat <b>tangyuan</b> on the Lantern Festival.'},
+    {en:'lion dance',ph:'/ˈlaɪən dɑːns/',cn:'舞狮',ex:'The <b>lion dance</b> is very exciting.'},
+    {en:'food',ph:'/fuːd/',cn:'食物',ex:'Chinese New Year <b>food</b> is delicious.'},
+    {en:'plan',ph:'/plæn/',cn:'计划',ex:'I <b>plan</b> to visit my grandparents.'},
+    {en:'light',ph:'/laɪt/',cn:'点燃',ex:'We <b>light</b> the candles at night.'}
+  ]},
+  {book:'六年级下册',unit:'Unit 1 The Lion and the Mouse',words:[
+    {en:'mouse',ph:'/maʊs/',cn:'老鼠',ex:'The <b>mouse</b> is very small.'},
+    {en:'large',ph:'/lɑːdʒ/',cn:'大的',ex:'The lion is very <b>large</b>.'},
+    {en:'strong',ph:'/strɒŋ/',cn:'强壮的',ex:'The man is very <b>strong</b>.'},
+    {en:'quietly',ph:'/ˈkwaɪətli/',cn:'小声地',ex:'The mouse walked <b>quietly</b>.'},
+    {en:'bite',ph:'/baɪt/',cn:'咬',ex:'The dog may <b>bite</b> you.'},
+    {en:'sharp',ph:'/ʃɑːp/',cn:'锋利的',ex:'The knife is very <b>sharp</b>.'},
+    {en:'wake up',ph:'/weɪk ʌp/',cn:'叫醒',ex:'Don\'t <b>wake up</b> the baby.'},
+    {en:'weak',ph:'/wiːk/',cn:'弱的',ex:'The old man is very <b>weak</b>.'}
+  ]},
+  {book:'六年级下册',unit:'Unit 2 Good Habits',words:[
+    {en:'habit',ph:'/ˈhæbɪt/',cn:'习惯',ex:'Reading is a good <b>habit</b>.'},
+    {en:'tidy',ph:'/ˈtaɪdi/',cn:'整齐的',ex:'Keep your room <b>tidy</b>.'},
+    {en:'never',ph:'/ˈnevər/',cn:'从不',ex:'I <b>never</b> go to school late.'},
+    {en:'sleepy',ph:'/ˈsliːpi/',cn:'困倦的',ex:'I feel <b>sleepy</b> in class.'},
+    {en:'finish',ph:'/ˈfɪnɪʃ/',cn:'完成',ex:'I can <b>finish</b> my homework early.'},
+    {en:'slowly',ph:'/ˈsləʊli/',cn:'慢速地',ex:'The old man walks <b>slowly</b>.'},
+    {en:'put in order',ph:'/pʊt ɪn ˈɔːdər/',cn:'整理好',ex:'Please <b>put in order</b> your desk.'},
+    {en:'late',ph:'/leɪt/',cn:'迟的',ex:'Do not be <b>late</b> for school.'}
+  ]},
+  {book:'六年级下册',unit:'Unit 3 A Healthy Diet',words:[
+    {en:'healthy',ph:'/ˈhelθi/',cn:'健康的',ex:'We should eat <b>healthy</b> food.'},
+    {en:'diet',ph:'/ˈdaɪət/',cn:'饮食',ex:'A good <b>diet</b> is important.'},
+    {en:'a little',ph:'/ə ˈlɪtl/',cn:'一点',ex:'I eat <b>a little</b> meat every day.'},
+    {en:'a few',ph:'/ə fjuː/',cn:'几个',ex:'I have <b>a few</b> eggs for breakfast.'},
+    {en:'cola',ph:'/ˈkəʊlə/',cn:'可乐',ex:'I drink <b>cola</b> sometimes.'},
+    {en:'need',ph:'/niːd/',cn:'需要',ex:'We <b>need</b> vegetables every day.'},
+    {en:'at a time',ph:'/ət ə taɪm/',cn:'一次',ex:'Eat one egg <b>at a time</b>.'}
+  ]},
+  {book:'六年级下册',unit:'Unit 4 Road Safety',words:[
+    {en:'road',ph:'/rəʊd/',cn:'马路',ex:'Look both ways before crossing the <b>road</b>.'},
+    {en:'safe',ph:'/seɪf/',cn:'安全的',ex:'It is <b>safe</b> to cross at the zebra crossing.'},
+    {en:'must',ph:'/mʌst/',cn:'必须',ex:'You <b>must</b> follow the rules.'},
+    {en:'cross',ph:'/krɒs/',cn:'穿过',ex:'<b>Cross</b> the road carefully.'},
+    {en:'zebra crossing',ph:'/ˈziːbrə ˈkrɒsɪŋ/',cn:'斑马线',ex:'Walk at the <b>zebra crossing</b>.'},
+    {en:'pavement',ph:'/ˈpeɪvmənt/',cn:'人行道',ex:'Walk on the <b>pavement</b>.'},
+    {en:'rule',ph:'/ruːl/',cn:'规则',ex:'We must follow the traffic <b>rule</b>.'},
+    {en:'look out',ph:'/lʊk aʊt/',cn:'当心',ex:'<b>Look out</b> for cars!'}
+  ]},
+  {book:'六年级下册',unit:'Unit 5 A Party',words:[
+    {en:'begin',ph:'/bɪˈɡɪn/',cn:'开始',ex:'The party will <b>begin</b> at three.'},
+    {en:'end',ph:'/end/',cn:'结束',ex:'The party will <b>end</b> at five.'},
+    {en:'clown',ph:'/klaʊn/',cn:'小丑',ex:'The <b>clown</b> is very funny.'},
+    {en:'appear',ph:'/əˈpɪər/',cn:'出现',ex:'A rabbit <b>appears</b> from the hat.'},
+    {en:'balloon',ph:'/bəˈluːn/',cn:'气球',ex:'The <b>balloon</b> is red and big.'},
+    {en:'Children\'s Day',ph:'/ˈtʃɪldrənz deɪ/',cn:'儿童节',ex:'<b>Children\'s Day</b> is on June 1st.'},
+    {en:'put on',ph:'/pʊt ɒn/',cn:'上演',ex:'We will <b>put on</b> a play.'}
+  ]},
+  {book:'六年级下册',unit:'Unit 6 An Interesting Country',words:[
+    {en:'country',ph:'/ˈkʌntri/',cn:'国家',ex:'Australia is an interesting <b>country</b>.'},
+    {en:'kangaroo',ph:'/ˌkæŋɡəˈruː/',cn:'袋鼠',ex:'The <b>kangaroo</b> can jump very far.'},
+    {en:'koala',ph:'/kəʊˈɑːlə/',cn:'考拉',ex:'The <b>koala</b> is very cute.'},
+    {en:'exciting',ph:'/ɪkˈsaɪtɪŋ/',cn:'令人激动的',ex:'The trip is very <b>exciting</b>.'},
+    {en:'visitor',ph:'/ˈvɪzɪtər/',cn:'游客',ex:'Many <b>visitors</b> come to China.'},
+    {en:'find out',ph:'/faɪnd aʊt/',cn:'发现',ex:'I want to <b>find out</b> about Australia.'},
+    {en:'magazine',ph:'/ˌmæɡəˈziːn/',cn:'杂志',ex:'I read a <b>magazine</b> about animals.'},
+    {en:'welcome',ph:'/ˈwelkəm/',cn:'欢迎',ex:'<b>Welcome</b> to our school!'}
+  ]},
+  {book:'六年级下册',unit:'Unit 7 Summer Holiday Plans',words:[
+    {en:'summer holiday',ph:'/ˈsʌmər ˈhɒlədeɪ/',cn:'暑假',ex:'I will go to Beijing this <b>summer holiday</b>.'},
+    {en:'travel',ph:'/ˈtrævl/',cn:'旅游',ex:'I like to <b>travel</b> with my family.'},
+    {en:'photo',ph:'/ˈfəʊtəʊ/',cn:'照片',ex:'I will take many <b>photos</b>.'},
+    {en:'stay',ph:'/steɪ/',cn:'停留',ex:'I will <b>stay</b> in Shanghai for a week.'},
+    {en:'sound',ph:'/saʊnd/',cn:'听起来',ex:'That <b>sounds</b> great!'},
+    {en:'Disney Park',ph:'/ˈdɪzni pɑːk/',cn:'迪士尼乐园',ex:'I want to visit <b>Disney Park</b>.'},
+    {en:'different',ph:'/ˈdɪfrənt/',cn:'不同的',ex:'The food here is <b>different</b>.'},
+    {en:'go back to',ph:'/ɡəʊ bæk tuː/',cn:'回去',ex:'I will <b>go back to</b> school.'}
+  ]},
+  {book:'六年级下册',unit:'Unit 8 Our Dreams',words:[
+    {en:'dream',ph:'/driːm/',cn:'梦想',ex:'My <b>dream</b> is to be a doctor.'},
+    {en:'scientist',ph:'/ˈsaɪəntɪst/',cn:'科学家',ex:'I want to be a <b>scientist</b>.'},
+    {en:'artist',ph:'/ˈɑːtɪst/',cn:'艺术家',ex:'She is a great <b>artist</b>.'},
+    {en:'astronaut',ph:'/ˈæstrənɔːt/',cn:'宇航员',ex:'The <b>astronaut</b> flies to the Moon.'},
+    {en:'spaceship',ph:'/ˈspeɪsʃɪp/',cn:'宇宙飞船',ex:'The <b>spaceship</b> is very fast.'},
+    {en:'dancer',ph:'/ˈdɑːnsər/',cn:'舞蹈家',ex:'She is a famous <b>dancer</b>.'},
+    {en:'pianist',ph:'/ˈpɪənɪst/',cn:'钢琴家',ex:'The <b>pianist</b> plays very well.'},
+    {en:'future',ph:'/ˈfjuːtʃər/',cn:'将来',ex:'What do you want to be in the <b>future</b>?'}
+  ]}
+],
+7: [
+  {book:'七年级上册',unit:'Unit 1 This is Me!',words:[
+    {en:'greet',ph:'/ɡriːt/',cn:'打招呼',ex:'I <b>greet</b> my teacher every morning.'},
+    {en:'introduce',ph:'/ˌɪntrəˈdjuːs/',cn:'介绍',ex:'Let me <b>introduce</b> myself.'},
+    {en:'hobby',ph:'/ˈhɒbi/',cn:'爱好',ex:'My <b>hobby</b> is reading.'},
+    {en:'classmate',ph:'/ˈklɑːsmeɪt/',cn:'同学',ex:'She is my <b>classmate</b>.'},
+    {en:'friendly',ph:'/ˈfrendli/',cn:'友好的',ex:'The teacher is very <b>friendly</b>.'},
+    {en:'polite',ph:'/pəˈlaɪt/',cn:'有礼貌的',ex:'Be <b>polite</b> to others.'},
+    {en:'smart',ph:'/smɑːt/',cn:'聪明的',ex:'He is a <b>smart</b> student.'},
+    {en:'shy',ph:'/ʃaɪ/',cn:'害羞的',ex:'She is a <b>shy</b> girl.'}
+  ]},
+  {book:'七年级上册',unit:'Unit 2 Hobbies',words:[
+    {en:'jogging',ph:'/ˈdʒɒɡɪŋ/',cn:'慢跑',ex:'I go <b>jogging</b> every morning.'},
+    {en:'painting',ph:'/ˈpeɪntɪŋ/',cn:'绘画作品',ex:'I like <b>painting</b> very much.'},
+    {en:'club',ph:'/klʌb/',cn:'俱乐部',ex:'I join the art <b>club</b>.'},
+    {en:'member',ph:'/ˈmembər/',cn:'成员',ex:'I am a <b>member</b> of the club.'},
+    {en:'join',ph:'/dʒɔɪn/',cn:'加入',ex:'I want to <b>join</b> the club.'},
+    {en:'design',ph:'/dɪˈzaɪn/',cn:'设计',ex:'She can <b>design</b> beautiful clothes.'},
+    {en:'skill',ph:'/skɪl/',cn:'技能',ex:'Reading is an important <b>skill</b>.'},
+    {en:'dream',ph:'/driːm/',cn:'梦想',ex:'My <b>dream</b> is to be a designer.'}
+  ]},
+  {book:'七年级上册',unit:'Unit 3 Welcome to Our School!',words:[
+    {en:'gym',ph:'/dʒɪm/',cn:'体育馆',ex:'We have PE class in the <b>gym</b>.'},
+    {en:'modern',ph:'/ˈmɒdərn/',cn:'现代的',ex:'Our school is very <b>modern</b>.'},
+    {en:'bright',ph:'/braɪt/',cn:'明亮的',ex:'The classroom is very <b>bright</b>.'},
+    {en:'lab',ph:'/læb/',cn:'实验室',ex:'We do experiments in the <b>lab</b>.'},
+    {en:'borrow',ph:'/ˈbɒrəʊ/',cn:'借',ex:'I <b>borrow</b> books from the library.'},
+    {en:'special',ph:'/ˈspeʃl/',cn:'特别的',ex:'Today is a <b>special</b> day.'},
+    {en:'sports field',ph:'/spɔːts fiːld/',cn:'体育场',ex:'We run on the <b>sports field</b>.'},
+    {en:'dining hall',ph:'/ˈdaɪnɪŋ hɔːl/',cn:'食堂',ex:'We have lunch in the <b>dining hall</b>.'}
+  ]},
+  {book:'七年级上册',unit:'Unit 4 My Day',words:[
+    {en:'activity',ph:'/ækˈtɪvəti/',cn:'活动',ex:'My favourite <b>activity</b> is reading.'},
+    {en:'weekday',ph:'/ˈwiːkdeɪ/',cn:'工作日',ex:'I get up early on <b>weekdays</b>.'},
+    {en:'practise',ph:'/ˈpræktɪs/',cn:'练习',ex:'I <b>practise</b> English every day.'},
+    {en:'amazing',ph:'/əˈmeɪzɪŋ/',cn:'令人惊奇的',ex:'The story is <b>amazing</b>.'},
+    {en:'seldom',ph:'/ˈseldəm/',cn:'很少',ex:'I <b>seldom</b> watch TV.'},
+    {en:'teamwork',ph:'/ˈtiːmwɜːk/',cn:'团队合作',ex:'<b>Teamwork</b> is very important.'},
+    {en:'get up',ph:'/ɡet ʌp/',cn:'起床',ex:'I <b>get up</b> at six thirty.'},
+    {en:'take part in',ph:'/teɪk pɑːt ɪn/',cn:'参加',ex:'I <b>take part in</b> the school trip.'}
+  ]},
+  {book:'七年级上册',unit:'Unit 5 A Healthy Lifestyle',words:[
+    {en:'lifestyle',ph:'/ˈlaɪfstaɪl/',cn:'生活方式',ex:'A healthy <b>lifestyle</b> is important.'},
+    {en:'cucumber',ph:'/ˈkjuːkʌmbər/',cn:'黄瓜',ex:'I like eating <b>cucumbers</b>.'},
+    {en:'watermelon',ph:'/ˈwɔːtərmelən/',cn:'西瓜',ex:'<b>Watermelon</b> is sweet and juicy.'},
+    {en:'chocolate',ph:'/ˈtʃɒklət/',cn:'巧克力',ex:'I love <b>chocolate</b> very much.'},
+    {en:'beef',ph:'/biːf/',cn:'牛肉',ex:'My mother cooks <b>beef</b> for dinner.'},
+    {en:'snack',ph:'/snæk/',cn:'点心',ex:'I sometimes eat a <b>snack</b> after school.'},
+    {en:'delicious',ph:'/dɪˈlɪʃəs/',cn:'美味的',ex:'The food is very <b>delicious</b>.'},
+    {en:'stay up',ph:'/steɪ ʌp/',cn:'熬夜',ex:'Don\'t <b>stay up</b> late at night.'}
+  ]},
+  {book:'七年级上册',unit:'Unit 6 My Clothes, My Style',words:[
+    {en:'style',ph:'/staɪl/',cn:'样式',ex:'I like this <b>style</b> of clothes.'},
+    {en:'blouse',ph:'/blaʊz/',cn:'女衬衫',ex:'She wears a white <b>blouse</b>.'},
+    {en:'jeans',ph:'/dʒiːnz/',cn:'牛仔裤',ex:'I like wearing <b>jeans</b>.'},
+    {en:'scarf',ph:'/skɑːf/',cn:'围巾',ex:'I wear a <b>scarf</b> in winter.'},
+    {en:'choose',ph:'/tʃuːz/',cn:'选择',ex:'You can <b>choose</b> your favourite colour.'},
+    {en:'comfortable',ph:'/ˈkʌmftəbl/',cn:'舒适的',ex:'These shoes are very <b>comfortable</b>.'},
+    {en:'material',ph:'/məˈtɪəriəl/',cn:'材料',ex:'Cotton is a good <b>material</b>.'},
+    {en:'popular',ph:'/ˈpɒpjələr/',cn:'流行的',ex:'This song is very <b>popular</b>.'}
+  ]},
+  {book:'七年级上册',unit:'Unit 7 Be Wise with Money',words:[
+    {en:'wise',ph:'/waɪz/',cn:'明智的',ex:'It is <b>wise</b> to save money.'},
+    {en:'budget',ph:'/ˈbʌdʒɪt/',cn:'预算',ex:'We should make a <b>budget</b>.'},
+    {en:'save',ph:'/seɪv/',cn:'储蓄',ex:'I <b>save</b> my pocket money.'},
+    {en:'expensive',ph:'/ɪkˈspensɪv/',cn:'昂贵的',ex:'The phone is too <b>expensive</b>.'},
+    {en:'pocket money',ph:'/ˈpɒkɪt ˈmʌni/',cn:'零花钱',ex:'I get <b>pocket money</b> every week.'},
+    {en:'coin',ph:'/kɔɪn/',cn:'硬币',ex:'I found a <b>coin</b> on the ground.'},
+    {en:'lucky money',ph:'/ˈlʌki ˈmʌni/',cn:'压岁钱',ex:'I got a lot of <b>lucky money</b>.'},
+    {en:'bank',ph:'/bæŋk/',cn:'银行',ex:'My mother works in a <b>bank</b>.'}
+  ]},
+  {book:'七年级上册',unit:'Unit 8 Let\'s Celebrate!',words:[
+    {en:'celebrate',ph:'/ˈselɪbreɪt/',cn:'庆祝',ex:'We <b>celebrate</b> Chinese New Year.'},
+    {en:'Christmas',ph:'/ˈkrɪsməs/',cn:'圣诞节',ex:'<b>Christmas</b> is in December.'},
+    {en:'tradition',ph:'/trəˈdɪʃn/',cn:'传统',ex:'It is a Chinese <b>tradition</b>.'},
+    {en:'dumpling',ph:'/ˈdʌmplɪŋ/',cn:'饺子',ex:'We eat <b>dumplings</b> at Spring Festival.'},
+    {en:'lantern',ph:'/ˈlæntərn/',cn:'灯笼',ex:'The <b>lantern</b> is very beautiful.'},
+    {en:'decorate',ph:'/ˈdekəreɪt/',cn:'装饰',ex:'We <b>decorate</b> the Christmas tree.'},
+    {en:'dragon',ph:'/ˈdræɡən/',cn:'龙',ex:'The <b>dragon</b> dance is exciting.'},
+    {en:'midnight',ph:'/ˈmɪdnaɪt/',cn:'午夜',ex:'We stay up until <b>midnight</b>.'}
+  ]},
+  {book:'七年级下册',unit:'Unit 1 Dream Homes',words:[
+    {en:'cottage',ph:'/ˈkɒtɪdʒ/',cn:'村舍',ex:'My grandma lives in a <b>cottage</b>.'},
+    {en:'balcony',ph:'/ˈbælkəni/',cn:'阳台',ex:'I like reading on the <b>balcony</b>.'},
+    {en:'bedroom',ph:'/ˈbedruːm/',cn:'卧室',ex:'My <b>bedroom</b> is very nice.'},
+    {en:'study',ph:'/ˈstʌdi/',cn:'书房',ex:'Dad works in the <b>study</b>.'},
+    {en:'village',ph:'/ˈvɪlɪdʒ/',cn:'村庄',ex:'She lives in a small <b>village</b>.'},
+    {en:'yard',ph:'/jɑːd/',cn:'院子',ex:'We play in the <b>yard</b>.'},
+    {en:'million',ph:'/ˈmɪljən/',cn:'一百万',ex:'The city has two <b>million</b> people.'},
+    {en:'living room',ph:'/ˈlɪvɪŋ ruːm/',cn:'客厅',ex:'We watch TV in the <b>living room</b>.'}
+  ]},
+  {book:'七年级下册',unit:'Unit 2 Neighbours',words:[
+    {en:'neighbour',ph:'/ˈneɪbər/',cn:'邻居',ex:'My <b>neighbour</b> is very kind.'},
+    {en:'community',ph:'/kəˈmjuːnəti/',cn:'社区',ex:'I love our <b>community</b>.'},
+    {en:'volunteer',ph:'/ˌvɒlənˈtɪər/',cn:'志愿者',ex:'She is a <b>volunteer</b> at the hospital.'},
+    {en:'engineer',ph:'/ˌendʒɪˈnɪər/',cn:'工程师',ex:'His father is an <b>engineer</b>.'},
+    {en:'repair',ph:'/rɪˈpeər/',cn:'修理',ex:'He can <b>repair</b> my bike.'},
+    {en:'broken',ph:'/ˈbrəʊkən/',cn:'破损的',ex:'The window is <b>broken</b>.'},
+    {en:'police station',ph:'/pəˈliːs ˈsteɪʃn/',cn:'警察局',ex:'The <b>police station</b> is near my home.'},
+    {en:'invite',ph:'/ɪnˈvaɪt/',cn:'邀请',ex:'I <b>invite</b> my friends to my party.'}
+  ]},
+  {book:'七年级下册',unit:'Unit 3 My Hometown',words:[
+    {en:'capital',ph:'/ˈkæpɪtl/',cn:'首都',ex:'Beijing is the <b>capital</b> of China.'},
+    {en:'ancient',ph:'/ˈeɪnʃənt/',cn:'古代的',ex:'The <b>ancient</b> city is beautiful.'},
+    {en:'treasure',ph:'/ˈtreʒər/',cn:'珍宝',ex:'The museum has many <b>treasures</b>.'},
+    {en:'theatre',ph:'/ˈθɪətər/',cn:'剧场',ex:'We went to the <b>theatre</b> last night.'},
+    {en:'fantastic',ph:'/fænˈtæstɪk/',cn:'极好的',ex:'The view is <b>fantastic</b>!'},
+    {en:'recommend',ph:'/ˌrekəˈmend/',cn:'推荐',ex:'I <b>recommend</b> this book to you.'},
+    {en:'place of interest',ph:'/pleɪs əv ˈɪntrəst/',cn:'名胜',ex:'The Great Wall is a famous <b>place of interest</b>.'},
+    {en:'tower',ph:'/ˈtaʊər/',cn:'塔',ex:'The TV <b>tower</b> is very tall.'}
+  ]},
+  {book:'七年级下册',unit:'Unit 4 Chinese Folk Art',words:[
+    {en:'folk',ph:'/fəʊk/',cn:'民间的',ex:'I like <b>folk</b> music very much.'},
+    {en:'china',ph:'/ˈtʃaɪnə/',cn:'瓷器',ex:'This <b>china</b> cup is very old.'},
+    {en:'craft',ph:'/krɑːft/',cn:'手艺',ex:'Paper-cutting is a traditional <b>craft</b>.'},
+    {en:'scissors',ph:'/ˈsɪzərz/',cn:'剪刀',ex:'I need <b>scissors</b> to cut the paper.'},
+    {en:'creative',ph:'/kriˈeɪtɪv/',cn:'有创造力的',ex:'She is very <b>creative</b>.'},
+    {en:'paper-cut',ph:'/ˈpeɪpər kʌt/',cn:'剪纸',ex:'<b>Paper-cut</b> is a Chinese art.'},
+    {en:'Chinese knot',ph:'/tʃaɪˈniːz nɒt/',cn:'中国结',ex:'The <b>Chinese knot</b> is beautiful.'},
+    {en:'spirit',ph:'/ˈspɪrɪt/',cn:'精神',ex:'We should learn the <b>spirit</b> of hard work.'}
+  ]},
+  {book:'七年级下册',unit:'Unit 5 Amazing Things',words:[
+    {en:'insect',ph:'/ˈɪnsekt/',cn:'昆虫',ex:'An ant is a small <b>insect</b>.'},
+    {en:'wing',ph:'/wɪŋ/',cn:'翅膀',ex:'The bird has beautiful <b>wings</b>.'},
+    {en:'snake',ph:'/sneɪk/',cn:'蛇',ex:'Be careful! There is a <b>snake</b>.'},
+    {en:'goldfish',ph:'/ˈɡəʊldfɪʃ/',cn:'金鱼',ex:'I have a <b>goldfish</b> at home.'},
+    {en:'parrot',ph:'/ˈpærət/',cn:'鹦鹉',ex:'The <b>parrot</b> can speak English.'},
+    {en:'giraffe',ph:'/dʒɪˈrɑːf/',cn:'长颈鹿',ex:'The <b>giraffe</b> has a long neck.'},
+    {en:'afraid',ph:'/əˈfreɪd/',cn:'害怕的',ex:'She is <b>afraid</b> of the dark.'},
+    {en:'lonely',ph:'/ˈləʊnli/',cn:'孤独的',ex:'The old man feels <b>lonely</b>.'}
+  ]},
+  {book:'七年级下册',unit:'Unit 6 Outdoor Fun',words:[
+    {en:'ocean',ph:'/ˈəʊʃn/',cn:'海洋',ex:'The <b>ocean</b> is very big and blue.'},
+    {en:'desert',ph:'/ˈdezərt/',cn:'沙漠',ex:'The <b>desert</b> is very hot and dry.'},
+    {en:'forest',ph:'/ˈfɒrɪst/',cn:'森林',ex:'We walk in the <b>forest</b>.'},
+    {en:'rainbow',ph:'/ˈreɪnbəʊ/',cn:'彩虹',ex:'I see a <b>rainbow</b> after the rain.'},
+    {en:'waterfall',ph:'/ˈwɔːtərfɔːl/',cn:'瀑布',ex:'The <b>waterfall</b> is very beautiful.'},
+    {en:'breathe',ph:'/briːð/',cn:'呼吸',ex:'We need to <b>breathe</b> fresh air.'},
+    {en:'oxygen',ph:'/ˈɒksɪdʒən/',cn:'氧气',ex:'Trees produce <b>oxygen</b> for us.'},
+    {en:'camp',ph:'/kæmp/',cn:'露营',ex:'We go <b>camping</b> in summer.'}
+  ]},
+  {book:'七年级下册',unit:'Unit 7 Outdoor Fun (Activities)',words:[
+    {en:'cycle',ph:'/ˈsaɪkl/',cn:'骑自行车',ex:'I <b>cycle</b> to school every day.'},
+    {en:'skate',ph:'/skeɪt/',cn:'滑冰',ex:'I like to <b>skate</b> in winter.'},
+    {en:'hike',ph:'/haɪk/',cn:'远足',ex:'We <b>hike</b> in the mountains.'},
+    {en:'balance',ph:'/ˈbæləns/',cn:'平衡',ex:'Keep your <b>balance</b> on the bike.'},
+    {en:'picnic',ph:'/ˈpɪknɪk/',cn:'野餐',ex:'We have a <b>picnic</b> in the park.'},
+    {en:'enjoyable',ph:'/ɪnˈdʒɔɪəbl/',cn:'令人愉快的',ex:'The trip was very <b>enjoyable</b>.'},
+    {en:'set off',ph:'/set ɒf/',cn:'出发',ex:'We <b>set off</b> early in the morning.'},
+    {en:'be proud of',ph:'/biː praʊd əv/',cn:'为...骄傲',ex:'I am <b>proud of</b> my school.'}
+  ]},
+  {book:'七年级下册',unit:'Unit 8 Wonderland',words:[
+    {en:'adventure',ph:'/ədˈventʃər/',cn:'历险',ex:'The <b>adventure</b> is very exciting.'},
+    {en:'magic',ph:'/ˈmædʒɪk/',cn:'有魔力的',ex:'The <b>magic</b> wand can do anything.'},
+    {en:'character',ph:'/ˈkærɪktər/',cn:'角色',ex:'My favourite <b>character</b> is the hero.'},
+    {en:'imagine',ph:'/ɪˈmædʒɪn/',cn:'想象',ex:'I <b>imagine</b> I can fly.'},
+    {en:'solve',ph:'/sɒlv/',cn:'解决',ex:'Can you <b>solve</b> this problem?'},
+    {en:'suddenly',ph:'/ˈsʌdənli/',cn:'突然',ex:'<b>Suddenly</b>, it started to rain.'},
+    {en:'decide',ph:'/dɪˈsaɪd/',cn:'决定',ex:'I <b>decide</b> to study hard.'},
+    {en:'give up',ph:'/ɡɪv ʌp/',cn:'放弃',ex:'Never <b>give up</b> your dream.'}
+  ]}
+]
+};
+
+// ========== STATE ==========
+let state = {
+  grade: null,
+  levelIdx: null,
+  learnIdx: 0,
+  pkWords: [],
+  pkIdx: 0,
+  pkScore: 0,
+  aiScore: 0,
+  pkTimer: null,
+  pkTimeLeft: 10,
+  pkAnswered: false,
+  pkOptions: []
+};
+
+// ========== STORAGE ==========
+function getProgress() {
+  try { return JSON.parse(localStorage.getItem('wordpk_progress') || '{}'); } catch { return {}; }
+}
+function saveProgress(p) { localStorage.setItem('wordpk_progress', JSON.stringify(p)); }
+function getHistory() {
+  try { return JSON.parse(localStorage.getItem('wordpk_history') || '[]'); } catch { return []; }
+}
+function saveHistory(h) { localStorage.setItem('wordpk_history', JSON.stringify(h)); }
+
+function isUnlocked(grade, idx) {
+  if (idx === 0) return true;
+  const p = getProgress();
+  const prevKey = grade + '_' + (idx - 1);
+  return p[prevKey] && p[prevKey].stars > 0;
+}
+function getLevelProgress(grade, idx) {
+  const p = getProgress();
+  return p[grade + '_' + idx] || null;
+}
+
+// ========== AUDIO ==========
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+function playTone(freq, dur, type) {
+  const o = audioCtx.createOscillator();
+  const g = audioCtx.createGain();
+  o.type = type || 'sine';
+  o.frequency.value = freq;
+  g.gain.setValueAtTime(0.15, audioCtx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+  o.connect(g); g.connect(audioCtx.destination);
+  o.start(); o.stop(audioCtx.currentTime + dur);
+}
+function sfxCorrect() { playTone(523, 0.12, 'sine'); setTimeout(() => playTone(659, 0.12, 'sine'), 100); setTimeout(() => playTone(784, 0.2, 'sine'), 200); }
+function sfxWrong() { playTone(200, 0.3, 'sawtooth'); }
+function sfxWin() { [523,659,784,1047].forEach((f,i) => setTimeout(() => playTone(f, 0.15, 'sine'), i * 120)); }
+function sfxClick() { playTone(800, 0.05, 'sine'); }
+
+// ========== SPEECH ==========
+function speak(word, cb) {
+  if (!window.speechSynthesis) { cb && cb(); return; }
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(word);
+  u.lang = 'en-US'; u.rate = 0.8;
+  if (cb) u.onend = cb;
+  window.speechSynthesis.speak(u);
+}
+
+// ========== NAVIGATION ==========
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// ========== HOME ==========
+function selectGrade(g) {
+  sfxClick();
+  state.grade = g;
+  renderLevels();
+  showPage('page-levels');
+}
+
+// ========== LEVELS ==========
+function renderLevels() {
+  const levels = DATA[state.grade];
+  const el = document.getElementById('page-levels');
+  let html = `<div class="header"><button class="back-btn" onclick="goHome()">&#8592;</button><div class="page-title">${state.grade}年级 闯关选择</div></div>`;
+  let lastBook = '';
+  levels.forEach((lv, i) => {
+    if (lv.book !== lastBook) {
+      lastBook = lv.book;
+      html += `<div class="book-label">${lv.book}</div>`;
+    }
+    const unlocked = isUnlocked(state.grade, i);
+    const prog = getLevelProgress(state.grade, i);
+    const stars = prog ? prog.stars : 0;
+    const starStr = stars > 0 ? '★'.repeat(stars) + '☆'.repeat(3 - stars) : '';
+    html += `<div class="level-card ${unlocked ? (stars > 0 ? 'completed' : '') : 'locked'}" onclick="startLearn(${i})">
+      <div class="level-num">${i + 1}</div>
+      <div class="level-info"><div class="level-name">${lv.unit}</div><div class="level-sub">${lv.words.length}个核心词</div></div>
+      ${unlocked ? (stars > 0 ? `<div class="level-stars">${starStr}</div>` : '<div style="color:var(--primary);font-size:12px;font-weight:600">GO</div>') : '<div class="level-lock">🔒</div>'}
+    </div>`;
+  });
+  html += `<div style="margin-top:20px"><button class="btn btn-outline btn-sm" onclick="showHistory()">历史成绩</button></div>`;
+  el.innerHTML = html;
+}
+
+function goHome() { sfxClick(); showPage('page-home'); }
+
+// ========== LEARN ==========
+function startLearn(levelIdx) {
+  sfxClick();
+  state.levelIdx = levelIdx;
+  state.learnIdx = 0;
+  renderLearn();
+  showPage('page-learn');
+  setTimeout(() => speakCurrentWord(), 300);
+}
+
+function renderLearn() {
+  const lv = DATA[state.grade][state.levelIdx];
+  const w = lv.words[state.learnIdx];
+  const total = lv.words.length;
+  const pct = ((state.learnIdx) / total * 100).toFixed(0);
+  const el = document.getElementById('page-learn');
+  el.innerHTML = `
+    <div class="header">
+      <button class="back-btn" onclick="backToLevels()">&#8592;</button>
+      <div class="page-title">${lv.unit}</div>
+    </div>
+    <div class="learn-counter">${state.learnIdx + 1} / ${total}</div>
+    <div class="learn-progress"><div class="learn-progress-bar" style="width:${pct}%"></div></div>
+    <div class="learn-word slide-up">
+      <div class="learn-en">${w.en}</div>
+      <div class="learn-phonetic">${w.ph}</div>
+      <div class="learn-cn">${w.cn}</div>
+      <button class="learn-speaker" onclick="speakCurrentWord()">&#128266;</button>
+    </div>
+    <div class="learn-example">${w.ex}</div>
+    <div class="learn-btns">
+      <button class="btn btn-success" onclick="nextWord()">我会了 ✓</button>
+    </div>`;
+}
+
+function speakCurrentWord() {
+  const lv = DATA[state.grade][state.levelIdx];
+  speak(lv.words[state.learnIdx].en);
+}
+
+function nextWord() {
+  sfxClick();
+  state.learnIdx++;
+  const lv = DATA[state.grade][state.levelIdx];
+  if (state.learnIdx >= lv.words.length) {
+    startPK();
+  } else {
+    renderLearn();
+    speakCurrentWord();
+  }
+}
+
+function backToLevels() {
+  sfxClick();
+  renderLevels();
+  showPage('page-levels');
+}
+
+// ========== PK ==========
+function startPK() {
+  const lv = DATA[state.grade][state.levelIdx];
+  state.pkWords = [...lv.words].sort(() => Math.random() - 0.5);
+  state.pkIdx = 0;
+  state.pkScore = 0;
+  state.aiScore = 0;
+  state.pkAnswered = false;
+  renderPK();
+  showPage('page-pk');
+  setTimeout(() => speakPKQuestion(), 500);
+}
+
+function renderPK() {
+  const el = document.getElementById('page-pk');
+  el.className = 'page active pk-page';
+  const w = state.pkWords[state.pkIdx];
+  // Generate options: correct + 3 wrong
+  const allWords = DATA[state.grade].flatMap(u => u.words);
+  const wrongs = allWords.filter(x => x.cn !== w.cn).sort(() => Math.random() - 0.5).slice(0, 3);
+  const options = [w, ...wrongs].sort(() => Math.random() - 0.5);
+  state.pkOptions = options;
+  state.pkTimeLeft = 10;
+  state.pkAnswered = false;
+
+  el.innerHTML = `
+    <div class="pk-header">
+      <div class="pk-vs">VS</div>
+      <div style="font-size:12px;opacity:.6">第 ${state.pkIdx + 1} / ${state.pkWords.length} 题</div>
+    </div>
+    <div class="pk-scores">
+      <div class="pk-score"><div class="pk-score-name">我</div><div class="pk-score-val" id="my-score">${state.pkScore}</div></div>
+      <div class="pk-score"><div class="pk-score-name">AI</div><div class="pk-score-val" id="ai-score">${state.aiScore}</div></div>
+    </div>
+    <div class="pk-timer" id="pk-timer">${state.pkTimeLeft}</div>
+    <div class="pk-question" id="pk-question">${w.cn}</div>
+    <div class="pk-options" id="pk-options">
+      ${options.map((o, i) => `<div class="pk-opt" id="opt-${i}" onclick="pkAnswer(${i})">${o.en}</div>`).join('')}
+    </div>`;
+  startPKTimer();
+}
+
+function startPKTimer() {
+  clearInterval(state.pkTimer);
+  state.pkTimer = setInterval(() => {
+    state.pkTimeLeft--;
+    const timerEl = document.getElementById('pk-timer');
+    if (timerEl) {
+      timerEl.textContent = state.pkTimeLeft;
+      if (state.pkTimeLeft <= 3) timerEl.classList.add('urgent');
+    }
+    if (state.pkTimeLeft <= 0) {
+      clearInterval(state.pkTimer);
+      if (!state.pkAnswered) pkTimeout();
+    }
+  }, 1000);
+}
+
+function speakPKQuestion() {
+  const w = state.pkWords[state.pkIdx];
+  speak(w.en);
+}
+
+function pkAnswer(idx) {
+  if (state.pkAnswered) return;
+  state.pkAnswered = true;
+  clearInterval(state.pkTimer);
+  const chosen = state.pkOptions[idx];
+  const correct = state.pkWords[state.pkIdx];
+  const optEl = document.getElementById('opt-' + idx);
+
+  if (chosen.en === correct.en) {
+    optEl.classList.add('correct');
+    state.pkScore++;
+    sfxCorrect();
+    document.getElementById('my-score').textContent = state.pkScore;
+    // Read the correct answer again
+    setTimeout(() => speak(correct.en), 300);
+  } else {
+    optEl.classList.add('wrong');
+    sfxWrong();
+    // Show correct answer
+    state.pkOptions.forEach((o, i) => {
+      if (o.en === correct.en) document.getElementById('opt-' + i).classList.add('correct');
+    });
+    // AI gets the point
+    state.aiScore++;
+    document.getElementById('ai-score').textContent = state.aiScore;
+  }
+  // Disable all options
+  document.querySelectorAll('.pk-opt').forEach(o => o.classList.add('disabled'));
+
+  setTimeout(() => pkNext(), 1800);
+}
+
+function pkTimeout() {
+  state.pkAnswered = true;
+  const correct = state.pkWords[state.pkIdx];
+  state.aiScore++;
+  sfxWrong();
+  const scoreEl = document.getElementById('ai-score');
+  if (scoreEl) scoreEl.textContent = state.aiScore;
+  state.pkOptions.forEach((o, i) => {
+    if (o.en === correct.en) document.getElementById('opt-' + i).classList.add('correct');
+    document.getElementById('opt-' + i).classList.add('disabled');
+  });
+  setTimeout(() => pkNext(), 1500);
+}
+
+function pkNext() {
+  state.pkIdx++;
+  if (state.pkIdx >= state.pkWords.length) {
+    pkFinish();
+  } else {
+    renderPK();
+    setTimeout(() => speakPKQuestion(), 400);
+  }
+}
+
+function pkFinish() {
+  clearInterval(state.pkTimer);
+  const total = state.pkWords.length;
+  const score = state.pkScore;
+  const pct = score / total;
+  let stars = pct >= 1 ? 3 : pct >= 0.7 ? 2 : pct >= 0.4 ? 1 : 0;
+  const won = score > state.aiScore;
+  if (won) sfxWin();
+
+  // Save progress
+  const p = getProgress();
+  const key = state.grade + '_' + state.levelIdx;
+  if (!p[key] || p[key].stars < stars) {
+    p[key] = { stars, score, total };
+    saveProgress(p);
+  }
+
+  // Save history
+  const lv = DATA[state.grade][state.levelIdx];
+  const h = getHistory();
+  h.unshift({
+    grade: state.grade,
+    unit: lv.unit,
+    book: lv.book,
+    score, total, stars, won,
+    date: new Date().toLocaleDateString('zh-CN')
+  });
+  if (h.length > 50) h.length = 50;
+  saveHistory(h);
+
+  renderReport(score, total, stars, won);
+  showPage('page-report');
+}
+
+// ========== REPORT ==========
+function renderReport(score, total, stars, won) {
+  const lv = DATA[state.grade][state.levelIdx];
+  const starStr = '★'.repeat(stars) + '☆'.repeat(3 - stars);
+  const el = document.getElementById('page-report');
+  el.innerHTML = `
+    <div class="header">
+      <div class="page-title">闯关成绩单</div>
+    </div>
+    <div class="report-card">
+      <div class="report-title">${won ? '恭喜胜利!' : '再接再厉!'}</div>
+      <div class="report-score">${score} / ${total}</div>
+      <div class="report-stars">${starStr}</div>
+      <div class="report-info">${lv.book}</div>
+      <div class="report-info">${lv.unit}</div>
+      <div class="report-info">${new Date().toLocaleDateString('zh-CN')} ${new Date().toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'})}</div>
+      <div class="report-lock">🔒 成绩已锁定</div>
+    </div>
+    <div class="report-actions">
+      <button class="btn btn-primary" onclick="replayLevel()">再闯一次</button>
+      <button class="btn btn-accent" onclick="backToLevelsFromReport()">返回关卡</button>
+    </div>`;
+}
+
+function replayLevel() {
+  sfxClick();
+  startLearn(state.levelIdx);
+}
+
+function backToLevelsFromReport() {
+  sfxClick();
+  renderLevels();
+  showPage('page-levels');
+}
+
+// ========== HISTORY ==========
+function showHistory() {
+  sfxClick();
+  const h = getHistory();
+  const el = document.getElementById('page-history');
+  let html = `<div class="header">
+    <button class="back-btn" onclick="renderLevels();showPage('page-levels')">&#8592;</button>
+    <div class="page-title">历史成绩</div>
+  </div>`;
+  if (h.length === 0) {
+    html += '<div style="text-align:center;color:var(--text2);margin-top:40px">还没有闯关记录</div>';
+  } else {
+    h.forEach(item => {
+      const starStr = '★'.repeat(item.stars) + '☆'.repeat(3 - item.stars);
+      html += `<div class="history-item">
+        <div><div class="history-name">${item.unit}</div><div class="history-date">${item.book} · ${item.date}</div></div>
+        <div style="text-align:right"><div class="history-score">${item.score}/${item.total}</div><div class="history-stars">${starStr}</div></div>
+      </div>`;
+    });
+  }
+  el.innerHTML = html;
+  showPage('page-history');
+}
+
+// ========== INIT ==========
+// Ensure audio context resumes on user interaction
+document.addEventListener('click', () => {
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+}, { once: true });
+</script>
+
+
+</body></html>
